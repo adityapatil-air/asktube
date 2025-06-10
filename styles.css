@@ -2,14 +2,15 @@
     position: fixed;
     top: 0;
     right: -400px;
-    width: 400px;
+    width: 360px;
     height: 100vh;
-    background: white;
-    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
-    transition: right 0.3s ease;
-    z-index: 9999;
+    background: #f0f0f0;
+    box-shadow: -4px 0 10px rgba(0, 0, 0, 0.15);
+    transition: right 0.3s ease-in-out;
+    z-index: 99999;
     display: flex;
     flex-direction: column;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .asktube-sidebar-open {
@@ -17,17 +18,20 @@
 }
 
 .asktube-header {
-    padding: 16px;
-    border-bottom: 1px solid #eee;
+    padding: 15px 20px;
+    border-bottom: 1px solid #e0e0e0;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .asktube-header h3 {
     margin: 0;
-    font-size: 18px;
+    font-size: 16px;
     color: #333;
+    font-weight: 600;
 }
 
 .asktube-close-btn {
@@ -35,18 +39,19 @@
     border: none;
     font-size: 24px;
     cursor: pointer;
-    color: #666;
-    padding: 0;
+    color: #888;
+    padding: 5px;
     width: 32px;
     height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
+    transition: background 0.2s ease;
 }
 
 .asktube-close-btn:hover {
-    background: #f0f0f0;
+    background: #e0e0e0;
 }
 
 .asktube-chat-container {
@@ -54,65 +59,88 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    padding: 10px 0;
 }
 
 .asktube-messages {
     flex: 1;
     overflow-y: auto;
-    padding: 16px;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .asktube-message {
-    margin-bottom: 16px;
-    padding: 12px;
-    border-radius: 8px;
-    max-width: 85%;
+    padding: 10px 15px;
+    border-radius: 18px;
+    max-width: 80%;
     word-wrap: break-word;
+    line-height: 1.5;
+    font-size: 14px;
 }
 
 .asktube-message-user {
-    background: #007AFF;
+    background: #0078d4;
     color: white;
     margin-left: auto;
+    border-bottom-right-radius: 4px;
 }
 
 .asktube-message-assistant {
-    background: #f0f0f0;
+    background: #ffffff;
     color: #333;
     margin-right: auto;
+    border: 1px solid #e0e0e0;
+    border-bottom-left-radius: 4px;
 }
 
 .asktube-message-error {
-    background: #ffebee;
-    color: #d32f2f;
+    background: #f8d7da;
+    color: #721c24;
     margin-right: auto;
+    border: 1px solid #f5c6cb;
 }
 
 .asktube-input-container {
-    padding: 16px;
-    border-top: 1px solid #eee;
+    padding: 15px 20px;
+    border-top: 1px solid #e0e0e0;
     display: flex;
-    gap: 8px;
+    align-items: center;
+    gap: 10px;
+    background: #ffffff;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.05);
 }
 
 #asktube-input {
     flex: 1;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+    padding: 10px 15px;
+    border: 1px solid #dcdcdc;
+    border-radius: 20px;
     resize: none;
     font-family: inherit;
     font-size: 14px;
+    min-height: 40px;
+    max-height: 120px;
+    box-sizing: border-box;
+}
+
+#asktube-input:focus {
+    outline: none;
+    border-color: #0078d4;
+    box-shadow: 0 0 0 2px rgba(0, 120, 212, 0.2);
 }
 
 .asktube-send-btn {
-    padding: 0 20px;
-    background: #007AFF;
+    padding: 10px 18px;
+    background: #0078d4;
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 20px;
     cursor: pointer;
     font-weight: 500;
+    font-size: 14px;
+    transition: background 0.2s ease;
 }
 
 .asktube-send-btn:hover {
@@ -121,25 +149,26 @@
 
 .asktube-floating-btn {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 60px;
-    height: 60px;
+    bottom: 25px;
+    right: 25px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
-    background: #007AFF;
+    background: #0078d4;
     color: white;
     border: none;
-    font-size: 16px;
-    font-weight: 500;
+    font-size: 15px;
+    font-weight: 600;
     cursor: pointer;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    z-index: 9998;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    z-index: 99998;
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: transform 0.2s ease, background 0.2s ease;
 }
 
 .asktube-floating-btn:hover {
     background: #0056b3;
-    transform: scale(1.05);
+    transform: scale(1.08);
 } 

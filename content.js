@@ -1,28 +1,10 @@
-// Create and inject the sidebar
+// Create and inject the sidebar iframe
 function createSidebar() {
-    const sidebar = document.createElement('div');
-    sidebar.id = 'asktube-sidebar';
-    sidebar.className = 'asktube-sidebar';
-    
-    sidebar.innerHTML = `
-        <div class="asktube-header">
-            <h3>AskTube Assistant</h3>
-            <button id="asktube-close" class="asktube-close-btn">×</button>
-        </div>
-        <div class="asktube-chat-container">
-            <div id="asktube-messages" class="asktube-messages"></div>
-            <div class="asktube-input-container">
-                <textarea id="asktube-input" placeholder="Ask a question about this video..." rows="3"></textarea>
-                <button id="asktube-send" class="asktube-send-btn">Send</button>
-            </div>
-        </div>
-    `;
-    
-    document.body.appendChild(sidebar);
-    
-    // Add event listeners
-    document.getElementById('asktube-close').addEventListener('click', toggleSidebar);
-    document.getElementById('asktube-send').addEventListener('click', handleQuestion);
+    const iframe = document.createElement('iframe');
+    iframe.id = 'asktube-sidebar';
+    iframe.className = 'asktube-sidebar';
+    iframe.src = chrome.runtime.getURL('sidebar.html');
+    document.body.appendChild(iframe);
     
     // Add floating button to open sidebar
     const floatingBtn = document.createElement('button');
@@ -48,53 +30,24 @@ function toggleSidebar() {
     }
 }
 
-// Handle user questions
-async function handleQuestion() {
-    const input = document.getElementById('asktube-input');
-    const question = input.value.trim();
-    
-    if (!question) return;
-    
-    // Add user message to chat
-    addMessage(question, 'user');
-    input.value = '';
-    
-    try {
-        // Get current video information
-        const videoId = new URLSearchParams(window.location.search).get('v');
-        const videoTitle = document.querySelector('h1.title').textContent;
-        
-        // TODO: Send to backend API
-        const response = await fetch('YOUR_BACKEND_API/ask', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                question,
-                videoId,
-                videoTitle
-            })
-        });
-        
-        const data = await response.json();
-        addMessage(data.answer, 'assistant');
-        
-    } catch (error) {
-        console.error('Error:', error);
-        addMessage('Sorry, I encountered an error. Please try again.', 'error');
+// Listen for messages from sidebar (iframe)
+window.addEventListener('message', (event) => {
+    if (event.data.type === 'CLOSE_SIDEBAR') {
+        toggleSidebar();
     }
-}
+});
 
-// Add message to chat
-function addMessage(text, type) {
-    const messagesContainer = document.getElementById('asktube-messages');
-    const messageDiv = document.createElement('div');
-    messageDiv.className = `asktube-message asktube-message-${type}`;
-    messageDiv.textContent = text;
-    messagesContainer.appendChild(messageDiv);
-    messagesContainer.scrollTop = messagesContainer.scrollHeight;
-}
+// Listen for messages from background script (e.g., GET_VIDEO_INFO)
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.type === 'GET_VIDEO_INFO') {
+        const videoId = new URLSearchParams(window.location.search).get('v');
+        const videoTitleElement = document.querySelector('h1.title');
+        const videoTitle = videoTitleElement ? videoTitleElement.textContent : 'Unknown Video';
+
+        sendResponse({ success: true, videoId, videoTitle });
+        return true; // Indicates an asynchronous response
+    }
+});
 
 // Initialize when YouTube page is loaded
 if (window.location.hostname === 'www.youtube.com') {
