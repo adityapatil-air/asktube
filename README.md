@@ -45,10 +45,3 @@ The extension requires a backend API to process questions and generate answers. 
 - `/transcript` - Fetches video transcript
 - `/ask` - Processes questions and returns answers
 
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## License
-
-MIT License - feel free to use this project for your own purposes. 
